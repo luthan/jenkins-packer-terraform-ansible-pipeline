@@ -6,14 +6,14 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        /*stage('Build') {
             steps {
                 sh 'ansible-galaxy install geerlingguy.apache'
                 dir ('packer'){
                     sh 'packer build web-server.json'
                 }
             }
-        }
+        }*/
 
         stage('Deploy') {
             steps {
