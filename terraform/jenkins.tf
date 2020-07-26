@@ -17,7 +17,7 @@ data "aws_ami" "jenkinsami" {
 }
 
 resource "aws_instance" "jenkins_server" {
-  instance_type = "t2.micro"
+  instance_type        = "t2.micro"
   ami                  = data.aws_ami.jenkinsami.id
   key_name             = aws_key_pair.jenkinskey.key_name
   iam_instance_profile = aws_iam_instance_profile.jenkins_server.name
