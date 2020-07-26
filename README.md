@@ -1,6 +1,8 @@
 This setup builds a jenkins server and a web server.  when web page changes occur, jenkins will poll the scm
 and build a new ami which will then be deployed by terraform
 
+Jenkins will need additional setup (build the pipeline, connect it to scm, and setup polling schedule).  Jenkinsfile contains the
+pipeline steps.
 
 Instructions:
 
