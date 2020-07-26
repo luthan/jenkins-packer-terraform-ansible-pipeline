@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        // setting this for packer, it will use it to get current dir context, wasn't sure how else to do it
         WORKINGDIR = pwd()
     }
 

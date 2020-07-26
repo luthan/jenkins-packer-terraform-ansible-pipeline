@@ -19,6 +19,11 @@ data "aws_ami" "webami" {
 resource "aws_instance" "web_server" {
   instance_type = "t2.micro"
   ami           = data.aws_ami.webami.id
+
+  provisioner "file" {
+    source      = "../web/index.html"
+    destination = "/var/www/"
+  }
 }
 
 output "webbox_ip_address" {
