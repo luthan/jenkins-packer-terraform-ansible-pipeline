@@ -53,14 +53,23 @@ data "aws_iam_policy" "S3FullAccess" {
   arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-resource "aws_iam_role_policy_attachment" "jenkins_server_ec2_policy_attachment" {
+data "aws_iam_policy" "IAMReadOnlyAccess" {
+  arn = "arn:aws:iam::aws:policy/IAMReadOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_server_EC2FullAccess_policy_attachment" {
   role       = aws_iam_role.jenkins_server.name
   policy_arn = data.aws_iam_policy.EC2FullAccess.arn
 }
 
-resource "aws_iam_role_policy_attachment" "jenkins_server_s3_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "jenkins_server_S3FullAccess_policy_attachment" {
   role       = aws_iam_role.jenkins_server.name
   policy_arn = data.aws_iam_policy.S3FullAccess.arn
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_server_IAMReadOnlyAccess_policy_attachment" {
+  role       = aws_iam_role.jenkins_server.name
+  policy_arn = data.aws_iam_policy.IAMReadOnlyAccess.arn
 }
 
 resource "aws_iam_instance_profile" "jenkins_server" {
