@@ -1,0 +1,48 @@
+{
+  "variables": {
+    "packer_version": "1.6.0",
+    "terraform_version": "0.12.29"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "ubuntu/images/*ubuntu-bionic-18.04-amd64-server-*",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "jenkins-server-{{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+     "type": "shell",
+     "inline" : [
+        "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y unzip",
+        "sudo apt-get install -y awscli",
+        "sudo apt-add-repository -y --update ppa:ansible/ansible && sudo apt install -y ansible",
+        "sudo wget https://releases.hashicorp.com/packer/{{user `packer_version`}}/packer_{{user `packer_version`}}_linux_amd64.zip",
+        "sudo unzip packer_{{user `packer_version`}}_linux_amd64.zip && sudo mv packer /usr/local/bin && sudo rm packer_{{user `packer_version`}}_linux_amd64.zip",
+        "sudo wget https://releases.hashicorp.com/terraform/{{user `terraform_version`}}/terraform_{{user `terraform_version`}}_linux_amd64.zip",
+        "sudo unzip terraform_{{user `terraform_version`}}_linux_amd64.zip && sudo mv terraform /usr/local/bin && sudo rm terraform_{{user `terraform_version`}}_linux_amd64.zip"
+     ]
+    },
+    {
+     "type": "ansible",
+     "playbook_file": "./jenkins-server.yml"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "jenkinsbox-manifest.json",
+      "strip_path": true
+    }
+  ]
+}

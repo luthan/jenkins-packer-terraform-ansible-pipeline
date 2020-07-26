@@ -1,6 +1,6 @@
 Instructions:
 
-First need to create two AMIs, in packer directory:
+First need to create two AMIs, in "first_steps" directory:
 
 packer build jenkins-server.json
 
